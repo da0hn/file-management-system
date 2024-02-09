@@ -1,0 +1,34 @@
+spring:
+  docker:
+    compose:
+      file: compose.yaml
+      enabled: ${FMS_ENABLE_COMPOSE:true}
+      lifecycle-management: start_only
+  jpa:
+    open-in-view: false
+    show-sql: ${FMS_SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    username: ${FMS_DATABASE_USER:file_management_system_user}
+    password: ${FMS_DATABASE_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${FMS_DATABASE_HOST:localhost}:${FMS_DATABASE_PORT:3350}/${FMS_DATABASE_NAME:file_management_system}
+  application:
+    name: file-management-system
+server:
+  port: ${FMS_PORT:8080}
+  address: 0.0.0.0
+  servlet:
+    context-path: /file-management-system/api/
+management:
+  tracing:
+    propagation:
+      type: w3c, b3, b3_multi
+    enabled: true
+  zipkin:
+    tracing:
+      connect-timeout: 10s
+      endpoint: http://${FMS_ZIPKIN_HOST:localhost}:${FMS_ZIPKIN_PORT:9411}/api/v2/spans
+      read-timeout: 10s

@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  mysql:
+    image: 'mysql:8.0.36'
+    container_name: 'file-management-system-database'
+    restart: always
+    environment:
+      - 'MYSQL_DATABASE=file_management_system'
+      - 'MYSQL_PASSWORD=password'
+      - 'MYSQL_ROOT_PASSWORD=password'
+      - 'MYSQL_USER=file_management_system_user'
+    ports:
+      - '3350:3306'
+    networks:
+      - file-management-system-network
+  zipkin:
+    image: 'openzipkin/zipkin:3.0.6'
+    container_name: 'file-management-system-zipkin'
+    restart: always
+    ports:
+      - '9411:9411'
+    networks:
+      - file-management-system-network
+networks:
+  file-management-system-network:
+    driver: bridge
+    name: file-management-system-network

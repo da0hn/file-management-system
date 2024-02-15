@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <kotlin.version>1.9.22</kotlin.version>
         <jjwt.version>0.11.5</jjwt.version>
+        <kotlin-logging-jvm.version>3.0.5</kotlin-logging-jvm.version>
     </properties>
     <dependencies>
         <dependency>
@@ -58,6 +59,11 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.microutils</groupId>
+            <artifactId>kotlin-logging-jvm</artifactId>
+            <version>${kotlin-logging-jvm.version}</version>
         </dependency>
 
         <dependency>

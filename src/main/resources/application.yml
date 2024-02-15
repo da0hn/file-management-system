@@ -9,6 +9,8 @@ spring:
     show-sql: ${FMS_SHOW_SQL:true}
     properties:
       hibernate:
+        type:
+          preferred_uuid_jdbc_type: CHAR
         format_sql: true
   datasource:
     username: ${FMS_DATABASE_USER:file_management_system_user}
@@ -39,3 +41,11 @@ management:
 logging:
   pattern:
     level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+application:
+  config:
+    jwt:
+      # https://generate-random.org/encryption-key-generator
+      secret: ${FMS_SECRET:tEN47o+RUwxHnPMuI3D3SGI3v/NgAkW9RCYTfMtgr2Phyy89+/fg14/daqBBnCJy}
+      expiration: ${FMS_EXPIRATION:3d}
+      refresh-secret: ${FMS_REFRESH_SECRET:ZACFTaqoiTakWeUGQCPmrD96rkwSWT0H3u7dEryzPUz49RGjTk+XEXQ33ub7U9QW}
+      refresh-expiration: ${FMS_REFRESH_EXPIRATION:7d}

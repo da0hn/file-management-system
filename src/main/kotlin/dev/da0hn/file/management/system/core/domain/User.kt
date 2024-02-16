@@ -18,6 +18,10 @@ class User(
 
 class UserId private constructor(value: String) : EntityId(value) {
   companion object : EntityIdFactory<UserId> {
+    override fun of(value: UUID): UserId {
+      return UserId(value.toString())
+    }
+
     override fun fromString(value: String): UserId {
       return UserId(value)
     }

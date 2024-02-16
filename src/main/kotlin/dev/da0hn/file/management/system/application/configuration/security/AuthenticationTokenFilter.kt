@@ -1,5 +1,6 @@
 package dev.da0hn.file.management.system.application.configuration.security
 
+import dev.da0hn.file.management.system.core.ports.spi.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -7,24 +8,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
-import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.OncePerRequestFilter
 
 
 class AuthenticationTokenFilter(
   private val userDetailsService: UserDetailsService,
-  private val jwtUtils: JwtUtils,
+  private val jwtService: JwtService,
 ) : OncePerRequestFilter() {
 
 
   override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
     try {
       val jwt = this.parseJwt(request)
-      val userDetails = this.userDetailsService.loadUserByUsername(this.jwtUtils.extractUsername(jwt, TokenType.AUTH_TOKEN))
-      val username = this.jwtUtils.extractUsername(jwt, TokenType.AUTH_TOKEN)
+      val userDetails = this.userDetailsService.loadUserByUsername(this.jwtService.extractUsername(jwt, TokenType.AUTH_TOKEN))
+      val username = this.jwtService.extractUsername(jwt, TokenType.AUTH_TOKEN)
       if (username != null && SecurityContextHolder.getContext().authentication == null) {
-        if (this.jwtUtils.validateToken(jwt, TokenType.AUTH_TOKEN, userDetails)) {
+        if (this.jwtService.validateToken(jwt, TokenType.AUTH_TOKEN, userDetails)) {
           val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
           authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
           SecurityContextHolder.getContext().authentication = authentication

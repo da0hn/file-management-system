@@ -1,6 +1,7 @@
 package dev.da0hn.file.management.system.application.configuration.security
 
 import dev.da0hn.file.management.system.application.configuration.properties.JwtProperties
+import dev.da0hn.file.management.system.core.ports.spi.JwtService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -16,15 +17,15 @@ import java.security.Key
 import java.util.Date
 
 @Component
-class JwtUtils(private val jwtProperties: JwtProperties) {
+class JwtServiceAdapter(private val jwtProperties: JwtProperties) : JwtService {
 
   private val logger = KotlinLogging.logger { }
 
-  fun extractUsername(token: String, type: TokenType): String? {
+  override fun extractUsername(token: String, type: TokenType): String? {
     return this.extractClaim(token, Claims::getSubject, type)
   }
 
-  fun validateToken(token: String, type: TokenType, userDetails: UserDetails): Boolean {
+  override fun validateToken(token: String, type: TokenType, userDetails: UserDetails): Boolean {
     try {
       Jwts.parserBuilder()
         .setSigningKey(this.getSignKey(type))
@@ -45,7 +46,7 @@ class JwtUtils(private val jwtProperties: JwtProperties) {
     return false
   }
 
-  fun generateToken(userName: String, type: TokenType): String {
+  override fun generateToken(userName: String, type: TokenType): String {
     val claims: Map<String, Any> = mapOf()
     return this.createToken(claims, userName, type)
   }
@@ -83,8 +84,8 @@ class JwtUtils(private val jwtProperties: JwtProperties) {
 
   private fun getExpiration(type: TokenType): Date {
     return when (type) {
-      TokenType.AUTH_TOKEN -> Date(System.currentTimeMillis() + this.jwtProperties.expiration.inWholeMilliseconds)
-      TokenType.REFRESH_TOKEN -> Date(System.currentTimeMillis() + this.jwtProperties.refreshExpiration.inWholeMilliseconds)
+      TokenType.AUTH_TOKEN -> Date(System.currentTimeMillis() + this.jwtProperties.expiration.toMillis())
+      TokenType.REFRESH_TOKEN -> Date(System.currentTimeMillis() + this.jwtProperties.refreshExpiration.toMillis())
     }
   }
 

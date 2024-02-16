@@ -13,6 +13,10 @@ class Role(
 
 class RoleId private constructor(value: String) : EntityId(value) {
   companion object : EntityIdFactory<RoleId> {
+    override fun of(value: UUID): RoleId {
+      return RoleId(value.toString())
+    }
+
     override fun fromString(value: String): RoleId {
       return RoleId(value)
     }

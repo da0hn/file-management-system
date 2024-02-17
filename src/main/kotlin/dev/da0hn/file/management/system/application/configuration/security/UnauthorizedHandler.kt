@@ -8,7 +8,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 
 @Component
-class AuthEntryPointJwt : AuthenticationEntryPoint {
+class UnauthorizedHandler : AuthenticationEntryPoint {
 
   val logger = KotlinLogging.logger {  }
 

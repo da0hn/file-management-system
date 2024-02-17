@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class WebSecurity(
   private val userDetailsServiceAdapter: UserDetailsService,
   private val jwtService: JwtService,
+  private val unauthorizedHandler: UnauthorizedHandler
 ) {
 
   @Bean
@@ -46,6 +47,7 @@ class WebSecurity(
   @Bean
   fun filterChain(http: HttpSecurity): DefaultSecurityFilterChain {
     http.csrf { it.disable() }
+      .exceptionHandling { it.authenticationEntryPoint(this.unauthorizedHandler) }
       .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
       .authorizeHttpRequests {
         it.requestMatchers("/actuator/**").permitAll()

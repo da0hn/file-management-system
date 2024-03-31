@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class WebSecurity(
   private val userDetailsServiceAdapter: UserDetailsService,
   private val jwtService: JwtService,
-  private val unauthorizedHandler: UnauthorizedHandler
+  private val unauthorizedHandler: UnauthorizedHandler,
 ) {
 
   @Bean
@@ -51,11 +51,10 @@ class WebSecurity(
       .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
       .authorizeHttpRequests {
         it.requestMatchers("/actuator/**").permitAll()
-//          .requestMatchers("/**/swagger-ui/**").permitAll()
-//          .requestMatchers("/**/swagger-resources/**").permitAll()
-//          .requestMatchers("/**/v3/api-docs/**").permitAll()
+          .requestMatchers("/**/swagger-ui/**").permitAll()
+          .requestMatchers("/**/swagger-resources/**").permitAll()
+          .requestMatchers("/**/v3/api-docs/**").permitAll()
           .requestMatchers("/auth/**").permitAll()
-//          .requestMatchers("/users/**").permitAll()
           .anyRequest().authenticated()
       }
     http.authenticationProvider(authenticationProvider())

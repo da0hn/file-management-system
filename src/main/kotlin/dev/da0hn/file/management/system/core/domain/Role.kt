@@ -1,31 +1,10 @@
 package dev.da0hn.file.management.system.core.domain
 
-import java.util.UUID
-
-class Role(
-  roleId: RoleId,
-  val name: String,
-) : Entity<RoleId>(roleId) {
-  override fun toString(): String {
-    return "Role{id='$id', name='$name'}"
-  }
+enum class Role {
+  ADMIN,
+  USER
 }
 
-class RoleId private constructor(value: String) : EntityId(value) {
-  companion object : EntityIdFactory<RoleId> {
-    override fun of(value: UUID): RoleId {
-      return RoleId(value.toString())
-    }
 
-    override fun fromString(value: String): RoleId {
-      return RoleId(value)
-    }
-
-    override fun newInstance(): RoleId {
-      return RoleId(UUID.randomUUID().toString())
-    }
-
-  }
-}
 
 

@@ -1,5 +1,6 @@
 package dev.da0hn.file.management.system.application.configuration.security
 
+import dev.da0hn.file.management.system.core.domain.TextEncoder
 import dev.da0hn.file.management.system.core.ports.spi.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -43,6 +44,13 @@ class WebSecurity(
 
   @Bean
   fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+  @Bean
+  fun textEncoder(): TextEncoder {
+    return object : TextEncoder {
+      override fun encode(text: String) = passwordEncoder().encode(text)
+    }
+  }
 
   @Bean
   fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {

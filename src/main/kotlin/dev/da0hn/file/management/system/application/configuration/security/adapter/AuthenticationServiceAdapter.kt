@@ -17,8 +17,8 @@ class AuthenticationServiceAdapter(
   override fun authenticate(username: String, password: String): AuthenticatedUserDetails {
     val authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
     val userDetails = authentication.principal as UserDetails
-    val jwtToken = jwtService.generateToken(userDetails.username, TokenType.AUTH_TOKEN)
-    val refreshToken = jwtService.generateToken(userDetails.username, TokenType.REFRESH_TOKEN)
+    val jwtToken = jwtService.generateToken(userDetails, TokenType.AUTH_TOKEN)
+    val refreshToken = jwtService.generateToken(userDetails, TokenType.REFRESH_TOKEN)
     return AuthenticatedUserDetails(
       userDetails.username,
       jwtToken,

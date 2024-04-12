@@ -15,8 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
+
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity(
+  securedEnabled = true,
+  prePostEnabled = true,
+  jsr250Enabled = true
+)
 class WebSecurity(
   private val userDetailsServiceAdapter: UserDetailsService,
   private val jwtService: JwtService,

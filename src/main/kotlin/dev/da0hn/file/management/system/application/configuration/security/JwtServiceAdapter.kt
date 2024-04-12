@@ -46,9 +46,11 @@ class JwtServiceAdapter(private val jwtProperties: JwtProperties) : JwtService {
     return false
   }
 
-  override fun generateToken(userName: String, type: TokenType): String {
-    val claims: Map<String, Any> = mapOf()
-    return this.createToken(claims, userName, type)
+  override fun generateToken(userDetails: UserDetails, type: TokenType): String {
+    val claims: Map<String, Any> = mapOf(
+      Pair("authorities", userDetails.authorities),
+    )
+    return this.createToken(claims, userDetails, type)
   }
 
   private fun extractExpiration(token: String, type: TokenType): Date? {
@@ -73,10 +75,10 @@ class JwtServiceAdapter(private val jwtProperties: JwtProperties) : JwtService {
     return this.extractExpiration(token, type)?.before(Date())
   }
 
-  private fun createToken(claims: Map<String, Any>, userName: String, type: TokenType): String {
+  private fun createToken(claims: Map<String, Any>, userDetails: UserDetails, type: TokenType): String {
     return Jwts.builder()
       .setClaims(claims)
-      .setSubject(userName)
+      .setSubject(userDetails.username)
       .setIssuedAt(Date(System.currentTimeMillis()))
       .setExpiration(this.getExpiration(type))
       .signWith(this.getSignKey(type), SignatureAlgorithm.HS256).compact()

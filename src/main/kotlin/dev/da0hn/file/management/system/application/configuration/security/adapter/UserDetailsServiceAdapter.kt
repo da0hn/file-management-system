@@ -22,7 +22,7 @@ class UserDetailsServiceAdapter(
 
   class UserDetailsImpl(private val entity: User) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-      return listOf(entity.role).map { r -> GrantedAuthority { r.name } }.toMutableList()
+      return listOf(entity.role).map { r -> GrantedAuthority { "ROLE_${r.name}" } }.toMutableList()
     }
 
     override fun getPassword(): String = entity.password

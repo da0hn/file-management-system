@@ -6,5 +6,5 @@ import org.springframework.security.core.userdetails.UserDetails
 interface JwtService {
   fun extractUsername(token: String, type: TokenType): String?
   fun validateToken(token: String, type: TokenType, userDetails: UserDetails): Boolean
-  fun generateToken(userName: String, type: TokenType): String
+  fun generateToken(userDetails: UserDetails, type: TokenType): String
 }

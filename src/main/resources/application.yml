@@ -41,6 +41,11 @@ management:
 logging:
   pattern:
     level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    org:
+      springframework:
+        web: INFO
+        security: INFO
 application:
   config:
     jwt:
